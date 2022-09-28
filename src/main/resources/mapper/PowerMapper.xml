@@ -1,0 +1,19 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyl.mapper.PowerMapper">
+
+    <select id="selectPowersByUsername" resultType="Power">
+        SELECT * FROM power where pid in
+        (SELECT pid FROM randp where rid =
+        (SELECT rid FROM user where uid =
+        (SELECT uid FROM user where username = #{username})))
+    </select>
+
+    <select id="selectPowersByAdminName" resultType="Power">
+        SELECT * FROM power where pid in
+        (SELECT pid FROM randp where rid =
+        (SELECT rid FROM admin where aid =
+        (SELECT aid FROM admin where username = #{username})))
+    </select>
+</mapper>

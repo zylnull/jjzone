@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyl.mapper.GuestbookMapper">
+    <resultMap id="GuestbookUnion" type="Guestbook">
+        <result property="id" column="id"></result>
+        <result property="uid" column="uid"></result>
+        <result property="gid" column="gid"></result>
+        <result property="content" column="content"></result>
+        <result property="sendTime" column="send_time"></result>
+        <result property="status" column="status"></result>
+        <result property="username" column="username"></result>
+        <result property="avater" column="avater"></result>
+    </resultMap>
+    
+    <select id="selectAllGuestBookByCurrentId" resultMap="GuestbookUnion">
+        SELECT u.username,u.avater,g.*  FROM user u,guestbook g WHERE u.uid = g.gid and g.uid = #{uid}
+    </select>
+
+    <select id="selectAllGuestBookByOtherId" resultMap="GuestbookUnion">
+        SELECT u.username,u.avater,g.*  FROM user u,guestbook g WHERE u.uid = g.gid and g.gid = #{gid}
+    </select>
+
+    <insert id="insertGuestBook" parameterType="Guestbook">
+        insert into guestbook(uid,gid,content,send_time) value (#{uid},#{gid},#{content},#{sendTime})
+    </insert>
+
+    <delete id="deleteGuestbookById">
+        delete from guestbook where id = #{id}
+    </delete>
+
+    <select id="selectAllGuestBook" resultMap="GuestbookUnion">
+        select u.username,u.avater,g.* from user u,guestbook g WHERE u.uid = g.gid
+    </select>
+
+    <update id="updateStatus" parameterType="Guestbook">
+        update guestbook set status = #{status} where id = #{id}
+    </update>
+</mapper>

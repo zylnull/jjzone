@@ -1,0 +1,64 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyl.mapper.UserMapper">
+    <insert id="insertUser" parameterType="User">
+        insert into user(username,password) value (#{username},#{password})
+    </insert>
+
+    <select id="selectByUsername" resultType="User">
+        select * from user where username = #{username}
+    </select>
+
+    <select id="selectAllUser" resultType="User">
+        select * from user
+    </select>
+
+    <select id="selectUserFriends" resultType="User">
+        SELECT  u.*  FROM user u,friend f where u.uid = f.fuid AND f.uid =
+        (SELECT uid FROM user where username = #{username})
+    </select>
+
+    <select id="selectUserFromKeyword" resultType="User">
+        select * from user where
+        uid = #{keyword} or
+        username = #{keyword} or
+        nickname like concat('%',#{keyword},'%')
+    </select>
+
+    <delete id="deleteByUid">
+        delete from user where uid = #{uid}
+    </delete>
+
+    <update id="updateByUid" parameterType="User">
+        update user
+        <set>
+            <if test="nickname != null ">
+                nickname = #{nickname},
+            </if>
+            <if test="sex != null ">
+                sex = #{sex},
+            </if>
+            <if test="birthday != null ">
+                birthday = #{birthday},
+            </if>
+            <if test="email != null ">
+                email = #{email},
+            </if>
+            <if test="address != address ">
+                email = #{address},
+            </if>
+            <if test="avater != null || avater != ''">
+                avater = #{avater},
+            </if>
+            <if test="phone != null || phone != '' ">
+                phone = #{phone}
+            </if>
+            where uid = #{uid}
+        </set>
+    </update>
+
+
+
+
+</mapper>
